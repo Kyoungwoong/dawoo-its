@@ -3,12 +3,15 @@ package com.example.common.dto;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class ResponseDto {
+    private static final Logger log = LoggerFactory.getLogger(ResponseDto.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void sendJson(HttpExchange exchange, int statusCode, String body) throws IOException {
@@ -27,6 +30,7 @@ public class ResponseDto {
     }
 
     public static void sendError(HttpExchange exchange, ErrorCode errorCode) throws IOException {
+        log.warn("sendError status={} code={}", errorCode.status(), errorCode.code());
         sendJson(exchange, errorCode.status(), ErrorResponse.from(errorCode));
     }
 }
