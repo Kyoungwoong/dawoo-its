@@ -1,11 +1,19 @@
 package com.example.handler;
 
+import com.example.common.UserCount;
 import com.example.common.dto.ResponseDto;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
+import java.util.List;
+
+import com.example.common.util.ResourceConfig;
 
 public class RootHandler {
+    private static String USER_FILE_PATH = "user.json";
+    private static final String USER_COUNT_FORMAT = "{\"sum\":%d,\"users\":%d}";
+    private static final String ERROR_USER_READ = "{\"error\":\"Failed to read users\"}";
+
     public static void handle(HttpExchange exchange) throws IOException {
         // - method/uri: 어떤 요청이 들어왔는지
         // - protocol: HTTP 버전
@@ -26,5 +34,21 @@ public class RootHandler {
             return;
         }
         ResponseDto.sendJson(exchange, 200, "{\"message\":\"server check\"}");
+    }
+
+    public static void sumUserCount(HttpExchange ex) throws IOException {
+        if (!"GET".equalsIgnoreCase(ex.getRequestMethod())) {
+            ResponseDto.sendJson(ex, 405, "{\"error\":\"Method Not Allowed\"}");
+            return;
+        }
+        try {
+            List<UserCount> userCountList = ResourceConfig.readConfig(USER_FILE_PATH, ResourceConfig::readUsers);
+            long totalCount = userCountList.stream()
+                    .mapToLong(UserCount::getCount)
+                    .sum();
+            ResponseDto.sendJson(ex, 200, String.format(USER_COUNT_FORMAT, totalCount, userCountList.size()));
+        } catch (Exception e) {
+            ResponseDto.sendJson(ex, 500, ERROR_USER_READ);
+        }
     }
 }

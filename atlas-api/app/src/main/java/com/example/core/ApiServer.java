@@ -23,6 +23,7 @@ public class ApiServer {
 
         // HttpExchange 핵심 학습 포인트를 하나의 엔드포인트로 정리
         server.createContext("/", RootHandler::handle);
+        server.createContext("/sum", RootHandler::sumUserCount);
 
         server.start();
         System.out.println("ApiServer running at http://localhost:" + serverConfig.port());

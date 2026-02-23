@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "users": [
+    { "name": "alice", "age": 24, "count": 5 },
+    { "name": "bob", "age": 31 },
+    { "name": "chris", "age": 19, "count": 1 }
+  ]
+}
