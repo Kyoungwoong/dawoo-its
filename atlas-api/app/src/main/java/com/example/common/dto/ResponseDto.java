@@ -25,12 +25,26 @@ public class ResponseDto {
     }
 
     public static void sendJson(HttpExchange exchange, int statusCode, Object body) throws IOException {
-        String json = OBJECT_MAPPER.writeValueAsString(body);
-        sendJson(exchange, statusCode, json);
+        try {
+            String json = OBJECT_MAPPER.writeValueAsString(body);
+            sendJson(exchange, statusCode, json);
+        } catch (Exception e) {
+            log.error("failed to serialize response body", e);
+            safeError(exchange, ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public static void sendError(HttpExchange exchange, ErrorCode errorCode) throws IOException {
         log.warn("sendError status={} code={}", errorCode.status(), errorCode.code());
         sendJson(exchange, errorCode.status(), ErrorResponse.from(errorCode));
+    }
+
+    private static void safeError(HttpExchange exchange, ErrorCode errorCode) {
+        try {
+            String fallback = "{\"code\":\"" + errorCode.code() + "\",\"message\":\"" + errorCode.message() + "\"}";
+            sendJson(exchange, errorCode.status(), fallback);
+        } catch (Exception ex) {
+            log.error("failed to send fallback error response", ex);
+        }
     }
 }
