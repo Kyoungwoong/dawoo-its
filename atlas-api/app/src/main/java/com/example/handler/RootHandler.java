@@ -1,6 +1,7 @@
 package com.example.handler;
 
 import com.example.common.UserCount;
+import com.example.common.dto.ErrorCode;
 import com.example.common.dto.ResponseDto;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -12,7 +13,6 @@ import com.example.common.util.ResourceConfig;
 public class RootHandler {
     private static String USER_FILE_PATH = "user.json";
     private static final String USER_COUNT_FORMAT = "{\"sum\":%d,\"users\":%d}";
-    private static final String ERROR_USER_READ = "{\"error\":\"Failed to read users\"}";
 
     public static void handle(HttpExchange exchange) throws IOException {
         // - method/uri: 어떤 요청이 들어왔는지
@@ -30,7 +30,7 @@ public class RootHandler {
         System.out.println("path: / \tx-forwarded-for=" + exchange.getRequestHeaders().getFirst("X-Forwarded-For")); // 프록시 뒤 실제 클라이언트 IP
 
         if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
-            ResponseDto.sendJson(exchange, 405, "{\"error\":\"Method Not Allowed\"}");
+            ResponseDto.sendError(exchange, ErrorCode.METHOD_NOT_ALLOWED);
             return;
         }
         ResponseDto.sendJson(exchange, 200, "{\"message\":\"server check\"}");
@@ -38,7 +38,7 @@ public class RootHandler {
 
     public static void sumUserCount(HttpExchange ex) throws IOException {
         if (!"GET".equalsIgnoreCase(ex.getRequestMethod())) {
-            ResponseDto.sendJson(ex, 405, "{\"error\":\"Method Not Allowed\"}");
+            ResponseDto.sendError(ex, ErrorCode.METHOD_NOT_ALLOWED);
             return;
         }
         try {
@@ -48,7 +48,7 @@ public class RootHandler {
                     .sum();
             ResponseDto.sendJson(ex, 200, String.format(USER_COUNT_FORMAT, totalCount, userCountList.size()));
         } catch (Exception e) {
-            ResponseDto.sendJson(ex, 500, ERROR_USER_READ);
+            ResponseDto.sendError(ex, ErrorCode.READ_USERS_FAILED);
         }
     }
 }
