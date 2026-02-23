@@ -1,5 +1,8 @@
 package com.example.core;
 
+import com.example.common.ServerConfig;
+import com.example.common.dto.ResponseDto;
+import com.example.common.util.ResourceConfig;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
@@ -8,14 +11,14 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 
-import static com.example.common.dto.ResponseDto.sendJson;
-
 public class ApiServer {
-    private static final String HOST = "0.0.0.0";
-    private static final int PORT = 5864;
+    private static final String SERVER_CONFIG_RESOURCE = "config.json";
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(HOST, PORT), 0);
+        ServerConfig serverConfig =
+                ResourceConfig.readConfig(SERVER_CONFIG_RESOURCE, ResourceConfig::parseServerConfigJson);
+        HttpServer server = HttpServer
+                .create(new InetSocketAddress(serverConfig.host(), serverConfig.port()), 0);
 
         // HttpExchange 핵심 학습 포인트를 하나의 엔드포인트로 정리
         server.createContext("/", exchange -> {
@@ -33,17 +36,17 @@ public class ApiServer {
             System.out.println("path: / \taccept=" + exchange.getRequestHeaders().getFirst("Accept")); // 클라이언트가 원하는 응답 타입
             System.out.println("path: / \tx-forwarded-for=" + exchange.getRequestHeaders().getFirst("X-Forwarded-For")); // 프록시 뒤 실제 클라이언트 IP
             if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
-                sendJson(exchange, 405, "{\"error\":\"Method Not Allowed\"}");
+                ResponseDto.sendJson(exchange, 405, "{\"error\":\"Method Not Allowed\"}");
                 return;
             }
-            sendJson(exchange, 200, "{\"message\":\"server check\"}");
+            ResponseDto.sendJson(exchange, 200, "{\"message\":\"server check\"}");
         });
 
-        int threadCnt = Math.max(4, Runtime.getRuntime().availableProcessors());
+        int threadCnt = Math.max(Math.max(4, Runtime.getRuntime().availableProcessors()), serverConfig.threadCount());
 
         server.setExecutor(Executors.newFixedThreadPool(threadCnt));
         server.start();
-        System.out.println("ApiServer running at http://localhost:" + PORT);
+        System.out.println("ApiServer running at http://localhost:" + serverConfig.port());
     }
 
     private static void handleRoot(HttpExchange exchange) throws IOException {
@@ -76,7 +79,7 @@ public class ApiServer {
 
         // 4) 응답 헤더 설정 후 응답 보내기 (ResponseDto 사용)
         if (!"GET".equalsIgnoreCase(method) && bodyText.isEmpty()) {
-            sendJson(exchange, 405, "{\"error\":\"Method Not Allowed\"}");
+            ResponseDto.sendJson(exchange, 405, "{\"error\":\"Method Not Allowed\"}");
             return;
         }
 
@@ -89,7 +92,7 @@ public class ApiServer {
                 + "\"remote\":\"" + escape(remote) + "\","
                 + "\"body\":\"" + escape(bodyText) + "\""
                 + "}";
-        sendJson(exchange, 200, body);
+        ResponseDto.sendJson(exchange, 200, body);
     }
 
     private static String escape(String s) {

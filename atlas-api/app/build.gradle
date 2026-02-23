@@ -34,7 +34,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.example.vanilla.App'
+    mainClass = 'com.example.core.ApiServer'
 }
 
 tasks.named('test') {
