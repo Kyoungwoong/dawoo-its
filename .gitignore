@@ -30,3 +30,8 @@ bin/
 .DS_Store
 
 *.iml
+
+.idea/
+
+/nova-spring/.gradle/
+/nova-spring/.idea/
