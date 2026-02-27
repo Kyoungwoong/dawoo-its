@@ -1,0 +1,182 @@
+[
+  {
+    "logId": "L001",
+    "cardId": "CARD-1001",
+    "stationIn": "Gangnam",
+    "stationOut": "Yeoksam",
+    "fare": 1250,
+    "timestamp": "2026-02-27T09:10:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L002",
+    "cardId": "CARD-1001",
+    "stationIn": "Yeoksam",
+    "stationOut": null,
+    "fare": "1250",
+    "timestamp": "2026-02-27T10:15:00Z",
+    "status": "IN_PROGRESS"
+  },
+  {
+    "logId": "L003",
+    "cardId": "CARD-2002",
+    "stationIn": "Hongdae",
+    "stationOut": "Sinchon",
+    "fare": 1400,
+    "timestamp": "2026-02-26T20:00:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L004",
+    "cardId": "CARD-2002",
+    "stationIn": "Sinchon",
+    "stationOut": "Ewha",
+    "fare": "1400",
+    "timestamp": "2026-02-26T20:35:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L005",
+    "cardId": "CARD-3003",
+    "stationIn": "Jamsil",
+    "stationOut": "SportsComplex",
+    "fare": 1350,
+    "timestamp": "2026-02-25T08:20:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L006",
+    "cardId": "CARD-3003",
+    "stationIn": "SportsComplex",
+    "stationOut": "Jamsil",
+    "fare": "1350",
+    "timestamp": "2026-02-25T18:05:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L007",
+    "cardId": "CARD-1001",
+    "stationIn": "Yeoksam",
+    "stationOut": "Seolleung",
+    "fare": 1250,
+    "timestamp": "2026-02-28T07:40:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L008",
+    "cardId": "CARD-4004",
+    "stationIn": "CityHall",
+    "stationOut": "Jonggak",
+    "fare": "1250",
+    "timestamp": "2026-02-28T08:15:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L009",
+    "cardId": "CARD-4004",
+    "stationIn": "Jonggak",
+    "stationOut": "CityHall",
+    "fare": 1250,
+    "timestamp": "2026-02-28T18:20:00Z",
+    "status": "CANCELED"
+  },
+  {
+    "logId": "L010",
+    "cardId": "CARD-5005",
+    "stationIn": "SeoulStation",
+    "stationOut": null,
+    "fare": 1500,
+    "timestamp": "2026-02-28T09:05:00Z",
+    "status": "IN_PROGRESS"
+  },
+  {
+    "logId": "L011",
+    "cardId": "CARD-5005",
+    "stationIn": "SeoulStation",
+    "stationOut": "Yongsan",
+    "fare": "1500",
+    "timestamp": "2026-02-28T09:45:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L012",
+    "cardId": "CARD-6006",
+    "stationIn": "Mapo",
+    "stationOut": "Gongdeok",
+    "fare": 1350,
+    "timestamp": "2026-02-27T21:55:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L013",
+    "cardId": "CARD-6006",
+    "stationIn": "Gongdeok",
+    "stationOut": "Mapo",
+    "fare": "1350",
+    "timestamp": "2026-02-27T22:25:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L014",
+    "cardId": "CARD-7007",
+    "stationIn": "Itaewon",
+    "stationOut": "Hangangjin",
+    "fare": "1400",
+    "timestamp": "2026-02-26T23:10:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L015",
+    "cardId": "CARD-7007",
+    "stationIn": "Hangangjin",
+    "stationOut": "Itaewon",
+    "fare": 1400,
+    "timestamp": "2026-02-27T00:05:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L016",
+    "cardId": "CARD-8008",
+    "stationIn": "Guro",
+    "stationOut": "Sindorim",
+    "fare": "1250",
+    "timestamp": "2026-02-28T06:30:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L017",
+    "cardId": "CARD-8008",
+    "stationIn": "Sindorim",
+    "stationOut": null,
+    "fare": 1250,
+    "timestamp": "2026-02-28T06:55:00Z",
+    "status": "IN_PROGRESS"
+  },
+  {
+    "logId": "L018",
+    "cardId": "CARD-9009",
+    "stationIn": "Myeongdong",
+    "stationOut": "Euljiro1ga",
+    "fare": "1250",
+    "timestamp": "2026-02-27T12:00:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L019",
+    "cardId": "CARD-9009",
+    "stationIn": "Euljiro1ga",
+    "stationOut": "Myeongdong",
+    "fare": 1250,
+    "timestamp": "2026-02-27T12:25:00Z",
+    "status": "COMPLETED"
+  },
+  {
+    "logId": "L020",
+    "cardId": "CARD-1010",
+    "stationIn": "Seolleung",
+    "stationOut": "Samseong",
+    "fare": "1250",
+    "timestamp": "2026-02-27T08:10:00Z",
+    "status": "COMPLETED"
+  }
+]

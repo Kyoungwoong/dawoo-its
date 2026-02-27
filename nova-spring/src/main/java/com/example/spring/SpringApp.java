@@ -10,12 +10,4 @@ public class SpringApp {
     public static void main(String[] args) {
         SpringApplication.run(SpringApp.class, args);
     }
-
-    @RestController
-    static class Health {
-        @GetMapping("/health")
-        public String health() {
-            return "OK";
-        }
-    }
 }
