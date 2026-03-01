@@ -26,11 +26,11 @@ public class TransitController {
 
     @GetMapping("/cards")
     public ResponseEntity<ResponseDto<List<CardDto>>> getCardList() {
-        long startNs = System.currentTimeMillis();
+        long startNs = System.nanoTime();
 
         List<CardDto> result = transitService.getCardTripCounts();
 
-        long tookMs = System.currentTimeMillis() - startNs;
+        long tookMs = System.nanoTime() - startNs;
         log.info("GET /api/transit/cards resultSize={} tookMs={}",
                 result.size(), tookMs);
 

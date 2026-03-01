@@ -1,0 +1,18 @@
+<configuration>
+  <!--
+    과제용 기본 표준 패턴.
+    - traceId는 MDC("traceId")가 있을 때만 표시됨 (없으면 -).
+  -->
+
+  <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] traceId=%X{traceId:-} %logger{36} - %msg%n"/>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${CONSOLE_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>
