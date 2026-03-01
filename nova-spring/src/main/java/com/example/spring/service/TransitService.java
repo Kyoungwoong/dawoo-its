@@ -1,16 +1,20 @@
 package com.example.spring.service;
 
+import com.example.spring.common.Validator;
 import com.example.spring.common.exception.DawooException;
 import com.example.spring.common.FileReader;
 import com.example.spring.domain.ErrorCode;
 import com.example.spring.domain.Transit;
 import com.example.spring.dto.CardDto;
+import com.example.spring.dto.LogRequest;
+import com.example.spring.dto.LogResponse;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Map;
 import java.util.*;
 
@@ -64,5 +68,66 @@ public class TransitService {
         log.debug("Built card list: transitCount={} cardCount={}",
                 transitList.size(), cardList.size());
         return cardList;
+    }
+
+    public List<LogResponse> getLogs(LogRequest logRequest) {
+        if (transitList == null) {
+            throw new DawooException(
+                    ErrorCode.FILE_CONTENTS_NOT_AVAILABLE,
+                    "Transit logs are not loaded",
+                    Map.of("path", TRANSIT_ARRAY_PATH)
+            );
+        }
+
+        if (!Validator.validate(logRequest)) {
+            throw new DawooException(ErrorCode.BAD_REQUEST);
+        }
+
+        Instant from = logRequest.getFrom() != null ? Instant.parse(logRequest.getFrom()) : null;
+        Instant to = logRequest.getTo() != null ? Instant.parse(logRequest.getTo()) : null;
+
+        List<LogResponse> result = findLogs(logRequest, from, to);
+
+        Collections.sort(result, (a, b) -> {
+            Instant at = Instant.parse(a.getTimestamp());
+            Instant bt = Instant.parse(b.getTimestamp());
+            return bt.compareTo(at); // timestamp desc
+        });
+
+        // limit은 정렬 이후 적용해야 최신 로그가 보장됨
+        if (result.size() > logRequest.getLimit()) {
+            return new ArrayList<>(result.subList(0, logRequest.getLimit()));
+        }
+        return result;
+    }
+
+    private List<LogResponse> findLogs(LogRequest request, Instant from, Instant to) {
+        List<LogResponse> result = new ArrayList<>();
+
+        for (Transit t : transitList) {
+            if (request.getCardId() != null
+                    && !request.getCardId().equals(t.getCardId())) {
+                continue;
+            }
+
+            if (request.getStatus() != null
+                    && !request.getStatus().equals(t.getStatus())) {
+                continue;
+            }
+
+            if (from != null || to != null) {
+                Instant ts = Instant.parse(t.getTimestamp());
+                if (from != null && ts.isBefore(from)) {
+                    continue; // from inclusive
+                }
+                if (to != null && !ts.isBefore(to)) {
+                    continue; // to exclusive
+                }
+            }
+
+            result.add(LogResponse.createLogResponse(t));
+        }
+
+        return result;
     }
 }

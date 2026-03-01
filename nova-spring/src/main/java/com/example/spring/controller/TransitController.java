@@ -1,15 +1,15 @@
 package com.example.spring.controller;
 
 import com.example.spring.dto.CardDto;
+import com.example.spring.dto.LogRequest;
+import com.example.spring.dto.LogResponse;
 import com.example.spring.dto.ResponseDto;
 import com.example.spring.service.TransitService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +30,22 @@ public class TransitController {
 
         return ResponseEntity.ok(ResponseDto.ok("SUCCESS", result));
 
+    }
+
+    @GetMapping("/logs")
+    public ResponseEntity<ResponseDto<List<LogResponse>>> getLogs(@RequestParam(required = false) String cardId,
+                                                                  @RequestParam(required = false) String status,
+                                                                  @RequestParam(required = false) String from,
+                                                                  @RequestParam(required = false) String to,
+                                                                  @RequestParam(required = false, defaultValue = "20") Integer limit) {
+
+        LogRequest logRequest = new LogRequest(cardId, status, from, to, limit);
+
+        return ResponseEntity.ok(
+                ResponseDto.ok(
+                        "Successfully query logs",
+                        transitService.getLogs(logRequest)
+                )
+        );
     }
 }
