@@ -139,3 +139,15 @@
 **AOP로 실행 시간을 하면 좋을 듯?**
 
 **NHN과 NAVER에 LOG 처리 확인**
+
+- Validation 표준화
+  - @Valid + @RestControllerAdvice에서
+  MethodArgumentNotValidException/
+  ConstraintViolationException 처리해 에러 포맷 통
+  일
+   - 요청 ID(추적) 최소 적용
+      - 과제에서는 필터 없이도 컨트롤러 진입 시 UUID 생
+        성해서 로그/응답에 같이 남기기(문제 재현에 도움)
+   - 입출력 DTO 규칙
+      - Controller는 Request/Response DTO만 받고 도메인
+        객체 노출 금지(과제 채점 시 구조 점수에 유리)
