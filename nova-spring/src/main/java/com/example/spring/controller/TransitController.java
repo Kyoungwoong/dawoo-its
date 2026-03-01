@@ -30,9 +30,8 @@ public class TransitController {
 
         List<CardDto> result = transitService.getCardTripCounts();
 
-        long tookMs = System.nanoTime() - startNs;
-        log.info("GET /api/transit/cards resultSize={} tookMs={}",
-                result.size(), tookMs);
+        long tookNs = System.nanoTime() - startNs;
+        log.info("GET /api/transit/cards resultSize={} tookNs={}", result.size(), tookNs);
 
         return ResponseEntity.ok(ResponseDto.ok("SUCCESS", result));
 

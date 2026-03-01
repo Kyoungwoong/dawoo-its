@@ -1,6 +1,8 @@
 package com.example.spring.service;
 
+import com.example.spring.common.exception.DawooException;
 import com.example.spring.common.FileReader;
+import com.example.spring.domain.ErrorCode;
 import com.example.spring.domain.Transit;
 import com.example.spring.dto.CardDto;
 import jakarta.annotation.PostConstruct;
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.*;
 
 @Service
@@ -33,6 +36,14 @@ public class TransitService {
     }
 
     public List<CardDto> getCardTripCounts() {
+        if (transitList == null) {
+            throw new DawooException(
+                    ErrorCode.FILE_CONTENTS_NOT_AVAILABLE,
+                    "Transit logs are not loaded",
+                    Map.of("path", TRANSIT_ARRAY_PATH)
+            );
+        }
+
         Map<String, Integer> cardMap = new HashMap<>();
         List<CardDto> cardList = new ArrayList<>();
 
