@@ -4,6 +4,9 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
 
+    // 400
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "Bad Request"),
+
     // 500
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "API Server Error"),
 
